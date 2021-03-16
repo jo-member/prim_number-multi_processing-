@@ -1,0 +1,43 @@
+import time
+from math import sqrt
+import csv
+import argparse
+def isprime(n):
+    '''
+    :param n(int): number that you want to know whether it's prime number
+    :return(bool)
+    '''
+    if n==1:
+        return False
+    for i in range(2,int(sqrt(n))+1):
+        if not n%i:
+            return False
+    return True
+
+def return_prime(start,end,prime_list):
+    '''
+    :param start: start number
+    :param end: end number
+    :param prime_list: list which has a prime number
+    '''
+    for i in range(start,end+1):
+        if isprime(i):
+            prime_list.append(i)
+
+
+if __name__ == "__main__":
+    start_time = time.time()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--number', type=int,
+                        help='number that you want to find prime number')
+    number = parser.parse_args().number
+    start = 1
+    end = number
+    prime_list = []
+    return_prime(start,end,prime_list)
+    t = time.time()-start_time
+    file_name = 'primlist'+str(number)+'_and_time(single_process).csv'
+    with open(file_name, 'w', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(prime_list)
+        writer.writerow([t])
