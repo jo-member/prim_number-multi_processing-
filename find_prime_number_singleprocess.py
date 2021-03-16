@@ -2,6 +2,8 @@ import time
 from math import sqrt
 import csv
 import argparse
+
+
 def isprime(n):
     '''
     :param n(int): number that you want to know whether it's prime number
@@ -13,6 +15,7 @@ def isprime(n):
         if not n%i:
             return False
     return True
+
 
 def return_prime(start,end,prime_list):
     '''
@@ -27,15 +30,20 @@ def return_prime(start,end,prime_list):
 
 if __name__ == "__main__":
     start_time = time.time()
+    
     parser = argparse.ArgumentParser()
     parser.add_argument('--number', type=int,
                         help='number that you want to find prime number')
     number = parser.parse_args().number
+    
     start = 1
     end = number
+    
     prime_list = []
     return_prime(start,end,prime_list)
+    
     t = time.time()-start_time
+    
     file_name = 'primlist'+str(number)+'_and_time(single_process).csv'
     with open(file_name, 'w', newline='') as f:
         writer = csv.writer(f)
