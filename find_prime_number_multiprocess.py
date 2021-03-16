@@ -28,9 +28,11 @@ def return_prime(start,end,prime_list):
 
 
 if __name__ == "__main__":
+    # Use Manager() for each process to access at same list
     manager = Manager()
     prime_list = manager.list()
     
+    # Use argparse to get number of processor to use and number
     parser = argparse.ArgumentParser()
     parser.add_argument('--process_number', type=int,
                         help='number of processor that you want to use')
@@ -39,16 +41,22 @@ if __name__ == "__main__":
     process_number = parser.parse_args().process_number
     number = parser.parse_args().number
     
+    # make proc_list to store each processes
     proc_list = []
+    
+    # record time
     start_time = time.time()
     
     start = 1
     end =number // process_number
     
+    # make process and call function to add prime number at list
     for i in range(process_number):
         proc = Process(target=return_prime,args=(start,end,prime_list))
         proc_list.append(proc)
+        #start process
         proc.start()
+        # update range
         start = end+1
         end = end+1000//process_number
         
@@ -57,6 +65,7 @@ if __name__ == "__main__":
         
     t = time.time()-start_time
     
+    #record prime numbers and excution time
     file_name = 'primelist'+str(number)+'_and_time('+str(process_number)+'_process).csv'
     with open(file_name, 'w', newline='') as f:
         writer = csv.writer(f)
