@@ -58,7 +58,7 @@ if __name__ == "__main__":
         proc.start()
         # update range
         start = end+1
-        end = end+1000//process_number
+        end = end+number//process_number
         
     for proc in proc_list:
         proc.join()
