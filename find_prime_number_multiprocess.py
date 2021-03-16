@@ -3,6 +3,7 @@ from math import sqrt
 import csv
 import argparse
 from multiprocessing import Process,Manager
+
 def isprime(n):
     '''
     :param n(int): number that you want to know whether it's prime number
@@ -29,6 +30,7 @@ def return_prime(start,end,prime_list):
 if __name__ == "__main__":
     manager = Manager()
     prime_list = manager.list()
+    
     parser = argparse.ArgumentParser()
     parser.add_argument('--process_number', type=int,
                         help='number of processor that you want to use')
@@ -36,19 +38,25 @@ if __name__ == "__main__":
                         help='number that you want to find prime number')
     process_number = parser.parse_args().process_number
     number = parser.parse_args().number
+    
     proc_list = []
     start_time = time.time()
+    
     start = 1
     end =number // process_number
+    
     for i in range(process_number):
         proc = Process(target=return_prime,args=(start,end,prime_list))
         proc_list.append(proc)
         proc.start()
         start = end+1
         end = end+1000//process_number
+        
     for proc in proc_list:
         proc.join()
+        
     t = time.time()-start_time
+    
     file_name = 'primelist'+str(number)+'_and_time('+str(process_number)+'_process).csv'
     with open(file_name, 'w', newline='') as f:
         writer = csv.writer(f)
